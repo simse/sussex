@@ -10,7 +10,7 @@
 #include <stdlib.h>
 
 #define MAX_STUDENTS 75
-#define MAX_NAME_LENGTH 255
+#define MAX_NAME_LENGTH 100
 
 struct student {
     int id;
@@ -191,17 +191,14 @@ void displayTitle(char title[])
     }
 }
 
-/* Will clear screen on Windows, and scroll down on Linux */
+/* Will clear screen using a system call */
 void clearScreen(void)
 {
     #ifdef _WIN32
     system("cls");
     #endif
     #ifdef linux
-    for(int i = 0; i < 30; i++)
-    {
-        puts();
-    }
+    system("clear");
     #endif
 }
 
@@ -296,9 +293,8 @@ void getStudentMarks(struct student *students, int studentCount,
 void confirmInputtedMarks(struct student *students, int studentCount)
 {
     _Bool firstLoop = 1;
-    char confirm = 'n';
-
-    while(confirm == 'n' || confirm == 'N')
+    char confirm;
+    while(confirm != 'y' || confirm == 'Y')
     {
         if(firstLoop)
         {
@@ -307,12 +303,15 @@ void confirmInputtedMarks(struct student *students, int studentCount)
         {
             updateStudentMark(students, studentCount);
         }
-
-        displayAllStudents(students, studentCount);
-
-        printf("\nIs the above correct? (y/n) ");
-        clearBuffer();
-        scanf("%c", &confirm);
+        while(confirm != 'n' && confirm != 'N' &&
+            confirm != 'y' && confirm != 'Y')
+        {
+            displayAllStudents(students, studentCount);
+            printf("\nIs the above correct? (y/n) ");
+            clearBuffer();
+            scanf("%c", &confirm);
+            clearBuffer();
+        }
     }
 }
 
