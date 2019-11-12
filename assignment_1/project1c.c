@@ -23,6 +23,7 @@ void displayOptions(void);
 void clearScreen(void);
 void clearBuffer(void);
 void confirm(void);
+void goodbye(void);
 int getNumber(char message[]);
 int getStudentCount(void);
 int getMark(char message[]);
@@ -33,11 +34,12 @@ void getStudentMarks(struct student students[],
     int studentCount,
     int coursework);
 void getCourseworkMarks(struct student students[], int studentCount,
-    int hasInputtedMarks[]);
-void confirmInputtedMarks(struct student students[], int studentCount);
+    _Bool hasInputtedMarks[]);
+void confirmInputtedMarks(struct student students[], int studentCount,
+    int coursework);
 void calculateStudentMark(struct student students[], int studentCount);
 void updateStudentMark(struct student students[],
-    int studentCount);
+    int studentCount, int coursework);
 void updateStudentName(struct student students[], int studentCount);
 void addNewStudent(struct student students[], int studentCount);
 void displayStudent(struct student students[], int studentId);
@@ -49,7 +51,7 @@ int main(void)
 {
     int studentCount = getStudentCount();
     struct student students[MAX_STUDENTS];
-    int hasInputtedMarks[] = {0, 0, 0};
+    _Bool hasInputtedMarks[] = {0, 0, 0};
     int option;
     int pin = 4444;
     getStudentNames(students, studentCount);
@@ -71,8 +73,7 @@ int main(void)
         }
         if(option == 4)
         {
-            puts("\n\nGoodbye y'all!\n");
-            confirm();
+            goodbye();
         }
     }
     return 0;
@@ -130,6 +131,12 @@ void confirm(void)
     clearBuffer();
     printf("Press any key to continue...");
     getchar();
+}
+
+void goodbye(void)
+{
+    puts("\n\nGoodbye y'all!\n");
+    confirm();
 }
 
 /* Gets number from screen after printing message */
@@ -230,7 +237,7 @@ void getStudentMarks(struct student students[], int studentCount,
     }
 }
 
-void getCourseworkMarks(struct student students[], int studentCount, int hasInputtedMarks[])
+void getCourseworkMarks(struct student students[], int studentCount, _Bool hasInputtedMarks[])
 {
     int coursework = getNumber("Which coursework mark would " 
         "you like to enter? ");
@@ -247,13 +254,13 @@ void getCourseworkMarks(struct student students[], int studentCount, int hasInpu
         confirm();
     } else {
         getStudentMarks(students, studentCount, coursework);
-        confirmInputtedMarks(students, studentCount);
+        confirmInputtedMarks(students, studentCount, coursework);
         hasInputtedMarks[coursework - 1] = 1;
     }
 }
 
 /* Displays student marks and allow editing until confirmation */
-void confirmInputtedMarks(struct student students[], int studentCount)
+void confirmInputtedMarks(struct student students[], int studentCount, int coursework)
 {
     _Bool firstLoop = 1;
     char confirm;
@@ -262,15 +269,18 @@ void confirmInputtedMarks(struct student students[], int studentCount)
         if(firstLoop)
         {
             firstLoop = 0;
-        } else
+        }
+        else
         {
-            updateStudentMark(students, studentCount);
+            updateStudentMark(students, studentCount, coursework);
+            confirm = 'o';
         }
         while(confirm != 'n' && confirm != 'N' &&
             confirm != 'y' && confirm != 'Y')
         {
+            printf("\n");
             displayAllStudents(students, studentCount);
-            printf("\nIs the above correct? (y/n) ");
+            printf("\n\nIs the above correct? (y/n) ");
             clearBuffer();
             scanf("%c", &confirm);
             clearBuffer();
@@ -296,15 +306,18 @@ void calculateStudentMark(struct student students[], int studentCount)
 }
 
 /* Allows updating a single mark for a single student */
-void updateStudentMark(struct student students[], int studentCount)
+void updateStudentMark(struct student students[], int studentCount, int coursework)
 {
     displayAllStudents(students, studentCount);
     printf("\n\n\n");
     int studentId = getStudentId(
         "Which student would you like to edit? (enter ID): ",
         studentCount);
-    int coursework = getNumber("\nWhich coursework would you like to "
+    if(coursework == 0)
+    {
+        int coursework = getNumber("\nWhich coursework would you like to "
         "update?");
+    }
     printf("\n\nPlease enter a mark for coursework %d: ", coursework);
     students[studentId].marks[coursework - 1] = getMark("");
     printf("\n\nMark updated!");
@@ -409,7 +422,7 @@ void supervisorMode(struct student students[], int studentCount, int pin)
 
                 if(suboption == 'b' || suboption == 'B')
                 {
-                    updateStudentMark(students, studentCount);
+                    updateStudentMark(students, studentCount, 0);
                 }
 
                 if(suboption == 'c' || suboption == 'C')
