@@ -32,7 +32,8 @@ void getStudentNames(struct student students[], int studentCount);
 void getStudentMarks(struct student students[],
     int studentCount,
     int coursework);
-void getCourseworkMarks(struct student students[], int studentCount);
+void getCourseworkMarks(struct student students[], int studentCount,
+    int hasInputtedMarks[]);
 void confirmInputtedMarks(struct student students[], int studentCount);
 void calculateStudentMark(struct student students[], int studentCount);
 void updateStudentMark(struct student students[],
@@ -46,74 +47,34 @@ void supervisorMode(struct student students[], int studentCount, int pin);
 
 int main(void)
 {
-    displayTitle("");
-    int studentCount = getNumber("How many students are there in your" \
-        " class? ");
-    while(studentCount > MAX_STUDENTS)
-    {
-        printf("You can have no more than 75 students in a class!\n\n");
-        studentCount = getNumber("How many students are there in your" \
-        " class? ");
-    }
-
+    int studentCount = getStudentCount();
     struct student students[MAX_STUDENTS];
     int hasInputtedMarks[] = {0, 0, 0};
-
-    getStudentNames(students, studentCount);
-    confirm();
-
     int option;
     int pin = 4444;
+    getStudentNames(students, studentCount);
+    displayTitle("");
     while(option != 4)
     {
-        clearScreen();
-        displayTitle("University of Sussex module manager");
-        puts("1. Enter marks");
-        puts("2. Display student mark");
-        puts("3. Supervisor mode");
-        puts("4. Exit\n");
-        printf("Please select and option: ");
-        scanf("%d", &option);
-
+        option = getOption();
         if(option == 1)
         {
-            int coursework = getNumber("Which coursework mark would " 
-                "you like to enter? ");
-            while(coursework > 3 || coursework < 1)
-            {
-                printf("\n\nPlease select coursework 1, 2 or 3.\n\n");
-                coursework = getNumber("Which coursework mark would " 
-                    "you like to enter? ");
-            }
-            if(hasInputtedMarks[coursework - 1]) {
-                puts("\nYou've already entered marks for that " 
-                    "coursework! To change marks, enter supervisor " 
-                    "mode.");
-                confirm();
-            } else {
-                getStudentMarks(students, studentCount, coursework);
-                confirmInputtedMarks(students, studentCount);
-                hasInputtedMarks[coursework - 1] = 1;
-            }
+            getCourseworkMarks(students, studentCount, hasInputtedMarks);
         }
-
         if(option == 2)
         {
             calculateStudentMark(students, studentCount);
         }
-
         if(option == 3)
         {
             supervisorMode(students, studentCount, pin);
         }
-
         if(option == 4)
         {
             puts("\n\nGoodbye y'all!\n");
             confirm();
         }
     }
-
     return 0;
 }
 
@@ -135,6 +96,15 @@ void displayTitle(char title[])
         puts("| ================================================== |");
         printf("\n\n");
     }
+}
+
+void displayOptions(void)
+{
+    displayTitle("University of Sussex module manager");
+    puts("1. Enter marks");
+    puts("2. Display student mark");
+    puts("3. Supervisor mode");
+    puts("4. Exit\n");
 }
 
 /* Will clear screen using a system call */
@@ -172,6 +142,19 @@ int getNumber(char message[])
     return number;
 }
 
+int getStudentCount(void)
+{
+    int studentCount = getNumber("How many students are there in your" \
+        " class? ");
+    while(studentCount > MAX_STUDENTS)
+    {
+        printf("You can have no more than 75 students in a class!\n\n");
+        studentCount = getNumber("How many students are there in your" \
+        " class? ");
+    }
+    return studentCount;
+}
+
 /* Gets number but applies input constraint; 0 =< mark =< 100 */
 int getMark(char message[])
 {
@@ -201,6 +184,16 @@ int getStudentId(char message[], int studentCount)
     return number - 1; /* Return as array index */
 }
 
+int getOption(void)
+{
+    int option;
+    clearScreen();
+    displayOptions();
+    printf("Please select and option: ");
+    scanf("%d", &option);
+    return option;
+}
+
 /* Will ask for student names given count */
 void getStudentNames(struct student students[], int studentCount)
 {
@@ -214,6 +207,8 @@ void getStudentNames(struct student students[], int studentCount)
     }
     printf("| -- | ---------------------------- |");
     puts("\n\nStudent names saved successfully!\n");
+    getchar();
+    confirm();
 }
 
 /* Will get coursework marks given student count and coursework */
@@ -232,6 +227,28 @@ void getStudentMarks(struct student students[], int studentCount,
         printf("%s: ", students[i].name, coursework);
         students[i].marks[coursework - 1] = getMark("");
         printf("\n");
+    }
+}
+
+void getCourseworkMarks(struct student students[], int studentCount, int hasInputtedMarks[])
+{
+    int coursework = getNumber("Which coursework mark would " 
+        "you like to enter? ");
+    while(coursework > 3 || coursework < 1)
+    {
+        printf("\n\nPlease select coursework 1, 2 or 3.\n\n");
+        coursework = getNumber("Which coursework mark would " 
+            "you like to enter? ");
+    }
+    if(hasInputtedMarks[coursework - 1]) {
+        puts("\nYou've already entered marks for that " 
+            "coursework! To change marks, enter supervisor " 
+            "mode.");
+        confirm();
+    } else {
+        getStudentMarks(students, studentCount, coursework);
+        confirmInputtedMarks(students, studentCount);
+        hasInputtedMarks[coursework - 1] = 1;
     }
 }
 
