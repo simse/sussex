@@ -19,25 +19,29 @@ struct student {
 };
 
 void displayTitle(char title[]);
+void displayOptions(void);
 void clearScreen(void);
 void clearBuffer(void);
 void confirm(void);
 int getNumber(char message[]);
+int getStudentCount(void);
 int getMark(char message[]);
 int getStudentId(char message[], int studentCount);
-void getStudentNames(struct student *students, int studentCount);
-void getStudentMarks(struct student *students,
+int getOption(void);
+void getStudentNames(struct student students[], int studentCount);
+void getStudentMarks(struct student students[],
     int studentCount,
     int coursework);
-void confirmInputtedMarks(struct student *students, int studentCount);
-void calculateStudentMark(struct student *students, int studentCount);
-void updateStudentMark(struct student *students,
+void getCourseworkMarks(struct student students[], int studentCount);
+void confirmInputtedMarks(struct student students[], int studentCount);
+void calculateStudentMark(struct student students[], int studentCount);
+void updateStudentMark(struct student students[],
     int studentCount);
-void updateStudentName(struct student *students, int studentCount);
-void addNewStudent(struct student *students, int studentCount);
-void displayStudent(struct student *students, int studentId);
-void displayAllStudents(struct student *students, int studentCount);
-void supervisorMode(struct student *students, int studentCount, int pin);
+void updateStudentName(struct student students[], int studentCount);
+void addNewStudent(struct student students[], int studentCount);
+void displayStudent(struct student students[], int studentId);
+void displayAllStudents(struct student students[], int studentCount);
+void supervisorMode(struct student students[], int studentCount, int pin);
 
 
 int main(void)
@@ -198,7 +202,7 @@ int getStudentId(char message[], int studentCount)
 }
 
 /* Will ask for student names given count */
-void getStudentNames(struct student *students, int studentCount)
+void getStudentNames(struct student students[], int studentCount)
 {
     printf("\n| -- | ---------------------------- |\n");
     for(int i = 0; i <= studentCount - 1; i++)
@@ -213,7 +217,7 @@ void getStudentNames(struct student *students, int studentCount)
 }
 
 /* Will get coursework marks given student count and coursework */
-void getStudentMarks(struct student *students, int studentCount,
+void getStudentMarks(struct student students[], int studentCount,
     int coursework)
 {
     clearScreen();
@@ -232,7 +236,7 @@ void getStudentMarks(struct student *students, int studentCount,
 }
 
 /* Displays student marks and allow editing until confirmation */
-void confirmInputtedMarks(struct student *students, int studentCount)
+void confirmInputtedMarks(struct student students[], int studentCount)
 {
     _Bool firstLoop = 1;
     char confirm;
@@ -258,7 +262,7 @@ void confirmInputtedMarks(struct student *students, int studentCount)
 }
 
 /* Will compute a final mark for a student */
-void calculateStudentMark(struct student *students, int studentCount)
+void calculateStudentMark(struct student students[], int studentCount)
 {
     displayAllStudents(students, studentCount);
     int studentId = getStudentId(
@@ -275,7 +279,7 @@ void calculateStudentMark(struct student *students, int studentCount)
 }
 
 /* Allows updating a single mark for a single student */
-void updateStudentMark(struct student *students, int studentCount)
+void updateStudentMark(struct student students[], int studentCount)
 {
     displayAllStudents(students, studentCount);
     printf("\n\n\n");
@@ -291,7 +295,7 @@ void updateStudentMark(struct student *students, int studentCount)
 }
 
 /* Allows updating a student name given ID */
-void updateStudentName(struct student *students, int studentCount)
+void updateStudentName(struct student students[], int studentCount)
 {
     clearScreen();
     displayTitle("Editing student");
@@ -309,7 +313,7 @@ void updateStudentName(struct student *students, int studentCount)
 }
 
 /* Will add a new student */
-void addNewStudent(struct student *students, int studentCount)
+void addNewStudent(struct student students[], int studentCount)
 {
     clearScreen();
     displayTitle("Add new student");
@@ -322,13 +326,15 @@ void addNewStudent(struct student *students, int studentCount)
 }
 
 /* Will display student record */
-void displayStudent(struct student *students, int studentId)
+void displayStudent(struct student students[], int studentId)
 {
+    int nameLength = strlen(students[studentId].name);
     printf("==========================================\n");
-    printf("| ID | Name            | C1  | C2  | C3  |\n");
+    printf("| ID | %-*s | C1  | C2  | C3  |\n", nameLength, "name");
     printf(
-        "| %2d | %-15s | %-3d | %-3d | %-3d |\n",
+        "| %2d | %-*s | %-3d | %-3d | %-3d |\n",
         studentId + 1,
+        nameLength,
         students[studentId].name,
         students[studentId].marks[0],
         students[studentId].marks[1],
@@ -338,7 +344,7 @@ void displayStudent(struct student *students, int studentId)
 }
 
 /* Will display all students in a table */
-void displayAllStudents(struct student *students, int studentCount)
+void displayAllStudents(struct student students[], int studentCount)
 {
     printf("| ID | Name            | C1  | C2  | C3  |\n");
     for(int i = 0; i <= studentCount - 1; i++)
@@ -355,7 +361,7 @@ void displayAllStudents(struct student *students, int studentCount)
 }
 
 /**/
-void supervisorMode(struct student *students, int studentCount, int pin)
+void supervisorMode(struct student students[], int studentCount, int pin)
 {
     /* Verify PIN */
             while(getNumber("\nPlease enter the PIN code: ") != pin)
