@@ -37,6 +37,7 @@ void updateStudentName(struct student *students, int studentCount);
 void addNewStudent(struct student *students, int studentCount);
 void displayStudent(struct student *students, int studentId);
 void displayAllStudents(struct student *students, int studentCount);
+void supervisorMode(struct student *students, int studentCount, int pin);
 
 
 int main(void)
@@ -99,66 +100,7 @@ int main(void)
 
         if(option == 3)
         {
-            /* Verify PIN */
-            while(getNumber("\nPlease enter the PIN code: ") != pin)
-            {
-                printf("\n\nWrong PIN!\n");
-            }
-            char suboption = 0;
-            while(suboption != 'e' && suboption != 'E')
-            {
-                clearScreen();
-                displayTitle("Supervisor mode");
-                puts("In supervisor mode you can add and edit " 
-                    "student information.\n");
-                puts("a. Change PIN");
-                puts("b. Change student mark");
-                puts("c. Add new student");
-                puts("d. Edit student name");
-                puts("e. Exit supervisor mode\n");
-                printf("Please select an option: ");
-                scanf("%c", &suboption);
-
-                if(suboption == 'a' || suboption == 'A')
-                {
-                    pin = getNumber("\n\nPlease enter new PIN: ");
-                    puts("\nPIN updated!\n\n");
-                    confirm();
-                }
-
-                if(suboption == 'b' || suboption == 'B')
-                {
-                    updateStudentMark(students, studentCount);
-                }
-
-                if(suboption == 'c' || suboption == 'C')
-                {
-                    if(studentCount >= MAX_STUDENTS)
-                    {
-                        printf("\n\nSorry, maximum students reached. "
-                            "You can have no more than 75 students "
-                            "at once.");
-                        confirm();
-                    } else
-                    {
-                        addNewStudent(students, studentCount++);
-                    }
-                    
-                }
-
-                if(suboption == 'd' || suboption == 'D')
-                {
-                    clearScreen();
-                    displayTitle("Editing student");
-
-                    updateStudentName(students, studentCount);
-                }
-
-                if(suboption == 'e' || suboption == 'E')
-                {
-                    continue;
-                }
-            }
+            supervisorMode(students, studentCount, pin);
         }
 
         if(option == 4)
@@ -410,4 +352,69 @@ void displayAllStudents(struct student *students, int studentCount)
             students[i].marks[2]
         );
     }
+}
+
+/**/
+void supervisorMode(struct student *students, int studentCount, int pin)
+{
+    /* Verify PIN */
+            while(getNumber("\nPlease enter the PIN code: ") != pin)
+            {
+                printf("\n\nWrong PIN!\n");
+            }
+            char suboption = 0;
+            while(suboption != 'e' && suboption != 'E')
+            {
+                clearScreen();
+                displayTitle("Supervisor mode");
+                puts("In supervisor mode you can add and edit " 
+                    "student information.\n");
+                puts("a. Change PIN");
+                puts("b. Change student mark");
+                puts("c. Add new student");
+                puts("d. Edit student name");
+                puts("e. Exit supervisor mode\n");
+                printf("Please select an option: ");
+                scanf("%c", &suboption);
+
+                if(suboption == 'a' || suboption == 'A')
+                {
+                    pin = getNumber("\n\nPlease enter new PIN: ");
+                    puts("\nPIN updated!\n\n");
+                    confirm();
+                }
+
+                if(suboption == 'b' || suboption == 'B')
+                {
+                    updateStudentMark(students, studentCount);
+                }
+
+                if(suboption == 'c' || suboption == 'C')
+                {
+                    if(studentCount >= MAX_STUDENTS)
+                    {
+                        printf("\n\nSorry, maximum students reached. "
+                            "You can have no more than 75 students "
+                            "at once.");
+                        confirm();
+                    } else
+                    {
+                        addNewStudent(students, studentCount++);
+                    }
+                    
+                }
+
+                if(suboption == 'd' || suboption == 'D')
+                {
+                    clearScreen();
+                    displayTitle("Editing student");
+
+                    updateStudentName(students, studentCount);
+                }
+
+                if(suboption == 'e' || suboption == 'E')
+                {
+                    continue;
+                }
+            }
 }
