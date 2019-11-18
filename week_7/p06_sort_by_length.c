@@ -1,8 +1,8 @@
 /* *********************************
- * p02_alter_names.c
- * A program to enter and display 10 names
+ * p06_sort_by_length.c
+ * A program to enter and display 10 names sorted by length
  * Simon Sorensen
- * 12/11/19
+ * 18/11/19
  * *********************************/
 
 #include <stdio.h>
@@ -13,6 +13,7 @@
 
 void displayNames(char names[NAMES][MAX_NAME_LENGTH]);
 void enterNameForId(char name[MAX_NAME_LENGTH], int index);
+void sortByLength(char names[NAMES][MAX_NAME_LENGTH]);
 
 int main(void)
 {
@@ -23,9 +24,13 @@ int main(void)
         enterNameForId(names[i], i);
     }
 
+
+    sortByLength(names);
     displayNames(names);
 
-    /* Alter names */
+    /* */
+
+    /* Alter names 
     int alterId = 0;
     do
     {
@@ -35,7 +40,7 @@ int main(void)
         fflush(stdin);
         enterNameForId(names, alterId - 1);
         displayNames(names);
-    } while(alterId != 0);
+    } while(alterId != 0);*/
 }
 
 void displayNames(char names[NAMES][MAX_NAME_LENGTH])
@@ -55,4 +60,30 @@ void enterNameForId(char name[MAX_NAME_LENGTH], int index)
     fgets(tmp, MAX_NAME_LENGTH, stdin);
     tmp[strlen(tmp)-1] = '\0';
     strcpy(name, tmp);
+}
+
+void sortByLength(char names[NAMES][MAX_NAME_LENGTH])
+{
+    _Bool hasChanged = 1;
+    while(hasChanged == 1)
+    {
+        hasChanged = 0;        
+
+        for(int i = 0; i < NAMES; i++)
+        {
+            if(i == 0)
+            {
+                continue;
+            } else {
+                if(strlen(names[i-1]) > strlen(names[i]))
+                {
+                    char tmp[MAX_NAME_LENGTH];
+                    strcpy(tmp, names[i-1]);
+                    strcpy(names[i-1], names[i]);
+                    strcpy(names[i], tmp);
+                    hasChanged = 1;
+                }
+            }
+        }
+    }
 }

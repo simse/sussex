@@ -44,7 +44,9 @@ void updateStudentName(struct student students[], int studentCount);
 void addNewStudent(struct student students[], int studentCount);
 void displayStudent(struct student students[], int studentId);
 void displayAllStudents(struct student students[], int studentCount);
-void supervisorMode(struct student students[], int studentCount, int pin);
+char getSupervisorOption(void);
+void supervisorMode(struct student students[], int studentCount,
+    int *pin);
 
 
 int main(void)
@@ -69,7 +71,7 @@ int main(void)
         }
         if(option == 3)
         {
-            supervisorMode(students, studentCount, pin);
+            supervisorMode(students, studentCount, &pin);
         }
         if(option == 4)
         {
@@ -82,7 +84,7 @@ int main(void)
 /* Will format and display inputted title or default */
 void displayTitle(char title[])
 {
-    if(title == "")
+    if(strlen(title) == 1)
     {
         puts("| ================================================== |");
         printf("| %-50s |\n", "University of Sussex module manager");
@@ -101,7 +103,6 @@ void displayTitle(char title[])
 
 void displayOptions(void)
 {
-    displayTitle("University of Sussex module manager");
     puts("1. Enter marks");
     puts("2. Display student mark");
     puts("3. Supervisor mode");
@@ -153,10 +154,11 @@ int getStudentCount(void)
 {
     int studentCount = getNumber("How many students are there in your" \
         " class? ");
-    while(studentCount > MAX_STUDENTS)
+    while(studentCount > MAX_STUDENTS || studentCount < 1)
     {
-        printf("You can have no more than 75 students in a class!\n\n");
-        studentCount = getNumber("How many students are there in your" \
+        printf("You can have no more than 75 and no less than 1 student"
+            " in a class!\n\n");
+        studentCount = getNumber("How many students are there in your"
         " class? ");
     }
     return studentCount;
@@ -184,13 +186,14 @@ int getStudentId(char message[], int studentCount)
     int number = getNumber(message);
     while(number > studentCount || number < 1)
     {
-        printf("\nWoops! That's not a valid student ID. The highest "
-            "ID is %d.\n\n", studentCount);
+        printf("\nWoops! That's not a valid student ID. The highest"
+            " ID is %d.\n\n", studentCount);
         number = getNumber(message);
     }
     return number - 1; /* Return as array index */
 }
 
+/* Will request menu option without any validation */
 int getOption(void)
 {
     int option;
@@ -209,35 +212,37 @@ void getStudentNames(struct student students[], int studentCount)
     {
         char name[MAX_NAME_LENGTH];
         printf("| %2d | Enter student name: ", i + 1);
-        scanf("%s", name);
-        strcpy(students[i].name, name);
+        do {
+            fgets(name, MAX_NAME_LENGTH, stdin);
+        } while(strlen(name) < 2);
+        strcpy(students[i].name, strtok(name, "\n"));
     }
     printf("| -- | ---------------------------- |");
     puts("\n\nStudent names saved successfully!\n");
-    getchar();
     confirm();
 }
 
-/* Will get coursework marks given student count and coursework */
+/* Will get coursework marks given student count and coursework ID */
 void getStudentMarks(struct student students[], int studentCount,
     int coursework)
 {
     clearScreen();
     clearBuffer();
     char title[255];
-    sprintf(&title, "Editing marks for coursework %d", coursework);
+    sprintf(title, "Editing marks for coursework %d", coursework);
     displayTitle(title);
 
     for(int i = 0; i <= studentCount - 1; i++)
     {
         clearBuffer();
-        printf("%s: ", students[i].name, coursework);
+        printf("%s: ", students[i].name);
         students[i].marks[coursework - 1] = getMark("");
         printf("\n");
     }
 }
 
-void getCourseworkMarks(struct student students[], int studentCount, _Bool hasInputtedMarks[])
+void getCourseworkMarks(struct student students[], int studentCount,
+    _Bool hasInputtedMarks[])
 {
     int coursework = getNumber("Which coursework mark would " 
         "you like to enter? ");
@@ -260,7 +265,8 @@ void getCourseworkMarks(struct student students[], int studentCount, _Bool hasIn
 }
 
 /* Displays student marks and allow editing until confirmation */
-void confirmInputtedMarks(struct student students[], int studentCount, int coursework)
+void confirmInputtedMarks(struct student students[], int studentCount,
+    int coursework)
 {
     _Bool firstLoop = 1;
     char confirm;
@@ -306,7 +312,8 @@ void calculateStudentMark(struct student students[], int studentCount)
 }
 
 /* Allows updating a single mark for a single student */
-void updateStudentMark(struct student students[], int studentCount, int coursework)
+void updateStudentMark(struct student students[], int studentCount,
+    int coursework)
 {
     displayAllStudents(students, studentCount);
     printf("\n\n\n");
@@ -315,8 +322,8 @@ void updateStudentMark(struct student students[], int studentCount, int coursewo
         studentCount);
     if(coursework == 0)
     {
-        int coursework = getNumber("\nWhich coursework would you like to "
-        "update?");
+        coursework = getNumber("\nWhich coursework would you like"
+        " to update?");
     }
     printf("\n\nPlease enter a mark for coursework %d: ", coursework);
     students[studentId].marks[coursework - 1] = getMark("");
@@ -355,7 +362,7 @@ void addNewStudent(struct student students[], int studentCount)
     confirm();
 }
 
-/* Will display student record */
+/* Will display individual student record */
 void displayStudent(struct student students[], int studentId)
 {
     int nameLength = strlen(students[studentId].name);
@@ -390,67 +397,77 @@ void displayAllStudents(struct student students[], int studentCount)
     }
 }
 
+char getSupervisorOption(void)
+{
+    char suboption;
+
+    displayTitle("Supervisor mode");
+    puts("In supervisor mode you can add and edit " 
+        "student information.\n");
+    puts("a. Change PIN");
+    puts("b. Change student mark");
+    puts("c. Add new student");
+    puts("d. Edit student name");
+    puts("e. Exit supervisor mode\n");
+    printf("Please select an option: ");
+    scanf("%c", &suboption);
+
+    return suboption;
+}
+
 /**/
-void supervisorMode(struct student students[], int studentCount, int pin)
+void supervisorMode(struct student students[], int studentCount,
+    int *pin)
 {
     /* Verify PIN */
-            while(getNumber("\nPlease enter the PIN code: ") != pin)
+    while(getNumber("\nPlease enter the PIN code: ") != *pin)
+    {
+        printf("\n\nWrong PIN!\n");
+    }
+    char suboption = 0;
+    while(suboption != 'e' && suboption != 'E')
+    {
+        clearScreen();
+        suboption = getSupervisorOption();
+
+        if(suboption == 'a' || suboption == 'A')
+        {
+            *pin = getNumber("\n\nPlease enter new PIN: ");
+            puts("\nPIN updated!\n\n");
+            confirm();
+        }
+
+        if(suboption == 'b' || suboption == 'B')
+        {
+            updateStudentMark(students, studentCount, 0);
+        }
+
+        if(suboption == 'c' || suboption == 'C')
+        {
+            if(studentCount >= MAX_STUDENTS)
             {
-                printf("\n\nWrong PIN!\n");
-            }
-            char suboption = 0;
-            while(suboption != 'e' && suboption != 'E')
+                printf("\n\nSorry, maximum students reached. "
+                    "You can have no more than 75 students "
+                    "at once.");
+                confirm();
+            } else
             {
-                clearScreen();
-                displayTitle("Supervisor mode");
-                puts("In supervisor mode you can add and edit " 
-                    "student information.\n");
-                puts("a. Change PIN");
-                puts("b. Change student mark");
-                puts("c. Add new student");
-                puts("d. Edit student name");
-                puts("e. Exit supervisor mode\n");
-                printf("Please select an option: ");
-                scanf("%c", &suboption);
-
-                if(suboption == 'a' || suboption == 'A')
-                {
-                    pin = getNumber("\n\nPlease enter new PIN: ");
-                    puts("\nPIN updated!\n\n");
-                    confirm();
-                }
-
-                if(suboption == 'b' || suboption == 'B')
-                {
-                    updateStudentMark(students, studentCount, 0);
-                }
-
-                if(suboption == 'c' || suboption == 'C')
-                {
-                    if(studentCount >= MAX_STUDENTS)
-                    {
-                        printf("\n\nSorry, maximum students reached. "
-                            "You can have no more than 75 students "
-                            "at once.");
-                        confirm();
-                    } else
-                    {
-                        addNewStudent(students, studentCount++);
-                    }
-                    
-                }
-
-                if(suboption == 'd' || suboption == 'D')
-                {
-                    clearScreen();
-                    displayTitle("Editing student");
-
-                    updateStudentName(students, studentCount);
-                }
-
-                if(suboption == 'e' || suboption == 'E')
-                {
-                    continue;
-                }
+                addNewStudent(students, studentCount++);
             }
+            
+        }
+
+        if(suboption == 'd' || suboption == 'D')
+        {
+            clearScreen();
+            displayTitle("Editing student");
+
+            updateStudentName(students, studentCount);
+        }
+
+        if(suboption == 'e' || suboption == 'E')
+        {
+            continue;
+        }
+    }
 }
