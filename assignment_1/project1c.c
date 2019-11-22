@@ -235,7 +235,7 @@ void getStudentMarks(struct student students[], int studentCount,
     for(int i = 0; i <= studentCount - 1; i++)
     {
         clearBuffer();
-        printf("%s: ", students[i].name);
+        printf("%[^\n]: ", students[i].name);
         students[i].marks[coursework - 1] = getMark("");
         printf("\n");
     }
@@ -343,7 +343,7 @@ void updateStudentName(struct student students[], int studentCount)
         studentCount);
     char name[MAX_NAME_LENGTH];
     printf("Enter updated student name: ");
-    scanf("%s", name);
+    scanf("%[^\n]", name);
     strcpy(students[studentId].name, name);
     printf("\n\nStudent name updated!\n\n");
     confirm();
@@ -356,7 +356,7 @@ void addNewStudent(struct student students[], int studentCount)
     displayTitle("Add new student");
     char name[MAX_NAME_LENGTH];
     printf("\n\nEnter student name: ");
-    scanf("%s", name);
+    scanf("%[^\n]", name);
     strcpy(students[studentCount].name, name);
     puts("\nNew student added!\n\n");
     confirm();
