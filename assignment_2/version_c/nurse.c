@@ -14,6 +14,13 @@
 #include "encrypt.h"
 
 #define FILE_BUFFER 55
+#define RED     "\x1b[31m"
+#define GREEN   "\x1b[32m"
+#define YELLOW  "\x1b[33m"
+#define BLUE    "\x1b[34m"
+#define MAGENTA "\x1b[35m"
+#define CYAN    "\x1b[36m"
+#define RESET   "\x1b[0m"
 
 /* Structures */
 struct nurse {
@@ -41,10 +48,13 @@ void login(struct nurse nurses[]);
 void savePatient(struct patient patient);
 
 /* Data input */
+int getNumber(int min, int max);
 void showError(char message[], int line, int column);
 void birthdayInputError(int day, int month, int year, int line);
 void getBirthday(struct patient *patient, int displayLine);
-int getNumber(int min, int max);
+void getName(struct patient *patient);
+void getBodyMeasurements(struct patient *patient);
+void getComment(struct patient *patient);
 
 /* Utility functions */
 void clearScreen(void);
@@ -57,10 +67,13 @@ int main(void)
     //login(nurses); //Username = a2345678, password = 
     clearScreen();
     puts("Welcome to the patient management system 5000");
-    //getBirthday(&patient, 1);
+    getBirthday(&patient, 1);
     patient.birthday = 10;
     patient.birthmonth = 2;
     patient.birthyear = 2;
+    patient.height = 120;
+    patient.waist = 40;
+    patient.weight = 81;
     strcpy(patient.last_name, "sorensen");
     savePatient(patient);
     //printf("%s", encrypt("test", 5));
@@ -155,13 +168,13 @@ void savePatient(struct patient patient)
         encryptNum(patient.weight),
         encrypt(patient.comment, 2000));
    fclose(patientFile);
-   printf("\nSaved patient to file: %s!", filename);
+   printf(GREEN"\nSaved patient to file: %s!\n\n"RESET, filename);
 }
 
 /* Input functions */
 void showError(char message[], int line, int column)
 {
-    printf("\033[%d;%dH^^ %s", line, column, message);
+    printf(RED"\033[%d;%dH^^ %s"RESET, line, column, message);
 }
 
 void birthdayInputError(int day, int month, int year, int line)

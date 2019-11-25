@@ -1,5 +1,7 @@
 #include <math.h>
 #include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
 #include "encrypt.h"
 
 char* encrypt(char input[], int length)
@@ -11,7 +13,8 @@ char* encrypt(char input[], int length)
     {
         char current_char = tmp[i];
         /* numbers */
-        if(current_char > 47 && current_char < 58) {
+        if(current_char > 47 && current_char < 58)
+        {
             tmp[i] = (current_char + 8 > 57) ? 
                 current_char - 2 : 
                 current_char + 8;
@@ -43,7 +46,8 @@ char* decrypt(char input[], int length)
     {
         char current_char = tmp[i];
         /* numbers */
-        if(current_char > 47 && current_char < 58) {
+        if(current_char > 47 && current_char < 58)
+        {
             tmp[i] = (current_char - 8 < 48) ? 
                 current_char + 2 : 
                 current_char - 8;
