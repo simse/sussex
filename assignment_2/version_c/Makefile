@@ -1,5 +1,5 @@
 nurse:
-	gcc -lm encrypt.c nurse.c -o nurse 2> build-log.txt
+	gcc encrypt.c nurse.c -lm -o nurse 2> build-log.txt
 	./nurse
 
 .PHONY: nurse

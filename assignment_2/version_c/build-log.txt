@@ -1,0 +1,5 @@
+nurse.c: In function ‘getComment’:
+nurse.c:260:15: warning: format ‘%[^
+   ’ expects argument of type ‘char *’, but argument 2 has type ‘char (*)[3000]’ [-Wformat=]
+     scanf("%[^\n]", &comment);
+            ~~~^~    ~~~~~~~~
