@@ -1,0 +1,62 @@
+Nurse login:
+
+/ ******************************************** /
+/            King's Royal Hospital             /
+/ ******************************************** /
+
+Username: 
+Password: 
+
+Wrong username and password combination!
+
+
+Username: 
+Password: 
+
+Logged in succesfully!
+
+
+
+
+
+Patient add:
+/ ******************************************** /
+/            King's Royal Hospital             /
+/ ******************************************** /
+
+Adding new patient.
+
+Enter full name:
+Enter birthday (DD/MM/YY): __/__/__
+Enter height (cm):
+Enter waist measurement (cm):
+Enter weight (kg):
+
+Excellent!
+
+
+Would you like to add a comment? (y/n): y
+
+Enter comment: blah blah blah
+
+Would you like to enter any additional comments? (y/n): n
+
+Saved patient file patients/sorensen210501.aow!
+
+PROGRAM EXIT
+
+
+
+Consultant main menu:
+/ ******************************************** /
+/            King's Royal Hospital             /
+/ ******************************************** /
+
+Welcome! The menu options are:
+
+1. View patient
+2. Edit patient
+3. Edit nurse passwords
+4. Exit
+
+Please select an option:
