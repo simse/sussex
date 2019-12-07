@@ -27,10 +27,15 @@ Patient add:
 Adding new patient.
 
 Enter full name:
+
 Enter birthday (DD/MM/YY): __/__/__
+
 Enter height (cm):
+
 Enter waist measurement (cm):
+
 Enter weight (kg):
+
 
 Excellent!
 
@@ -59,4 +64,60 @@ Welcome! The menu options are:
 3. Edit nurse passwords
 4. Exit
 
-Please select an option:
+Please select an option: 1
+
+Patients:
+
+- 1: Simon Sorensen
+- 2: Ewan Mcgregor
+
+Which patient would you like to open? 1
+
++----------+----------------+
+| Name     | Simon Sorensen |
++----------+----------------+
+| Weight   | 79kg           |
++----------+----------------+
+| Height   | 171cm          |
++----------+----------------+
+| Waist    | 500cm          |
++----------+----------------+
+| Birthday | 21/05/01       |
++----------+----------------+
+
+No comments attached!
+
+
+Consultant edit patient:
+
+Patients:
+
+- 1: Simon Sorensen
+- 2: Ewan Mcgregor
+
+Which patient would you like to edit? 1
+
+Opening Simon Sorensen. Enter new value or press ENTER to skip.
++----------+----------------+
+| Name     | Simon Sorensen |
++----------+----------------+
+| Weight   | 79kg           |
++----------+----------------+
+| Height   | 171cm          |
++----------+----------------+
+| Waist    | 500cm <- 500 is above maximum waist size
++----------+----------------+
+| Birthday | 21/05/01       |
++----------+----------------+
+
+Consultant update nurse login:
+Nurses:
+- 1: Simon Sorensen
+- 2: Ewan Mcgregor
+- 3: Simon Sorensen
+- 4: Ewan Mcgregor
+- 5: Simon Sorensen
+
+Which nurse would you like to update? 3
+
+New password: ********

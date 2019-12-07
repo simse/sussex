@@ -1,5 +1,26 @@
-nurse.c: In function ‘getComment’:
-nurse.c:260:15: warning: format ‘%[^
+patient.c: In function ‘getComment’:
+patient.c:99:15: warning: format ‘%[^
    ’ expects argument of type ‘char *’, but argument 2 has type ‘char (*)[3000]’ [-Wformat=]
-     scanf("%[^\n]", &comment);
-            ~~~^~    ~~~~~~~~
+     scanf("%[^\n]%*c", &comment);
+            ~~~^~       ~~~~~~~~
+patient.c: In function ‘showPatient’:
+patient.c:188:23: warning: ‘%s’ directive writing up to 49 bytes into a region of size between 10 and 59 [-Wformat-overflow=]
+     sprintf(name, "%s %s", patient.first_name, patient.last_name);
+                       ^~                       ~~~~~~~
+patient.c:188:5: note: ‘sprintf’ output between 2 and 100 bytes into a destination of size 60
+     sprintf(name, "%s %s", patient.first_name, patient.last_name);
+     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+consultant.c: In function ‘editNurseCredentials’:
+consultant.c:85:15: warning: format ‘%[^
+   ’ expects argument of type ‘char *’, but argument 2 has type ‘char (*)[9]’ [-Wformat=]
+     scanf("%[^\n]%*c", &username);
+            ~~~^~       ~~~~~~~~~
+consultant.c:87:15: warning: format ‘%[^
+   ’ expects argument of type ‘char *’, but argument 2 has type ‘char (*)[9]’ [-Wformat=]
+     scanf("%[^\n]%*c", &password);
+            ~~~^~       ~~~~~~~~~
+consultant.c:88:5: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
+     strcpy(nurses[nurse-1].id, encrypt(username, 8));
+     ^~~~~~
+consultant.c:88:5: warning: incompatible implicit declaration of built-in function ‘strcpy’
+consultant.c:88:5: note: include ‘<string.h>’ or provide a declaration of ‘strcpy’

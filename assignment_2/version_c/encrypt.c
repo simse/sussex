@@ -1,3 +1,10 @@
+/***********************************************************************
+ * encrypt.c
+ * Functions for encryption module
+ * Simon Sorensen
+ * 21/11/19
+ * ********************************************************************/
+
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
@@ -70,20 +77,16 @@ char* decrypt(char input[], int length)
     return tmp;
 }
 
-int encryptNum(int num)
+char* encryptNum(int num)
 {
     int length = (int)(num ? log10(num) + 1 : 1);
     char *tmp;
     tmp = (char *) malloc(length);
     sprintf(tmp, "%d", num);
-    return atoi(encrypt(tmp, 8));
+    return encrypt(tmp, 8);
 }
 
-int decryptNum(int num)
+int decryptNum(char* num)
 {
-    int length = (int)(num ? log10(num) + 1 : 1);
-    char *tmp;
-    tmp = (char *) malloc(length);
-    sprintf(tmp, "%d", num);
-    return atoi(decrypt(tmp, 8));
+    return atoi(decrypt(num, 8));
 }
