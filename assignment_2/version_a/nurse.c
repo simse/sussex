@@ -29,8 +29,8 @@ int validateCredentials(char *id, char *password, struct nurse nurses[]);
 void savePatient(struct patient);
 
 /* Encryption */
-void encrypt(char *input);
-void decrypt(char *output);
+char* encrypt(char *input);
+char* decrypt(char *output);
 
 /* Data input */
 char *input(char *validation);

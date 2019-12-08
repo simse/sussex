@@ -39,13 +39,9 @@ int getNumber(int min, int max);
 
 int main(void)
 {
-    /* Load nurse details from file */
-    /* Prompt for login */
-    /* Authenticate and greet nurse */
-    /* Prompt for new patient details */
-    /* Confirm whether details are correct and allow for editing */
-    /* Save to file */
-    /* Ask whether to add new patient or exit */
+    char tmp[255];
+    printf("Username: ");
+    
 
     return 0;
 }

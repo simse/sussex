@@ -12,10 +12,19 @@
 #include "nurse.h"
 #include "auth.h"
 
+#define ASCII_NUMBER_LOWER_BOUND 47
+#define ASCII_NUMBER_UPPER_BOUND 58
+#define ASCII_LOWERCASE_LOWER_BOUND 64
+#define ASCII_LOWERCASE_UPPER_BOUND 91
+#define ASCII_UPPERCASE_LOWER_BOUND 96
+#define ASCII_UPPERCASE_UPPER_BOUND 123
+
 void editNurseCredentials(void);
 void displayOptions(void);
 void wait(void);
 void clearScreen(void);
+_Bool verifyLogin(char username[], char password[]);
+_Bool verifyFormat(char input[]);
 
 int main(void)
 {
@@ -24,12 +33,12 @@ int main(void)
     while (option != 4)
     {
         displayOptions();
-
         printf("\n\nPlease enter an option: ");
         scanf("%d%*c", &option);
-
-        if(option == 4) exit(0);
-
+        if(option == 4)
+        {
+            exit(0);
+        }
         int patientNumber;
         if(option == 1 || option == 2)
         {
@@ -44,20 +53,19 @@ int main(void)
                 sprintf(filename, "%s%d.aow", lastname, birthday);
             } while(!openPatient(filename, &patient));
         }
-
         if(option == 1)
         {
             showPatient(patient);
         }
-
         if(option == 2)
         {
             clearScreen();
             editPatient(&patient);
         }
-
-        if(option == 3) editNurseCredentials();
-
+        if(option == 3)
+        {
+            editNurseCredentials();
+        }
         wait();
         clearScreen();
     }
@@ -67,28 +75,66 @@ void editNurseCredentials(void)
 {
     struct nurse nurses[5];
     loadAuth(nurses);
-
     puts("The nurses are:");
     for(int i = 0; i < 5; i++)
     {
         printf("- %d: %s\n", i + 1, nurses[i].name);
     }
-
     int nurse = 0;
     do {
         printf("\nWhich nurse credentials you like to update? ");
         scanf("%d%*c", &nurse);
     } while(nurse < 0 && nurse > 6);
-    
     char username[9], password[9];
-    printf("\nNew username: ");
-    scanf("%[^\n]%*c", &username);
-    printf("\nNew password: ");
-    scanf("%[^\n]%*c", &password);
-    strcpy(nurses[nurse-1].id, encrypt(username, 8));
-    strcpy(nurses[nurse-1].password, encrypt(password, 8));
+    do
+    {
+        printf("\nNew username: ");
+        scanf("%[^\n]", &username);
+        getchar();
+    } while (!verifyFormat(username));
+    do
+    {
+        printf("\nNew password: ");
+        scanf("%[^\n]", &password);
+        getchar();
+    } while (!verifyFormat(password));
+    strcpy(nurses[nurse-1].id, username);
+    strcpy(nurses[nurse-1].password, password);
     saveAuth(nurses);
     printf("\n\nCredentials saved!");
+}
+
+_Bool verifyFormat(char input[])
+{
+    if(strlen(input) != 8)
+    {
+        puts("IDs and passwords must be 8 characters in length!");
+        return 0;
+    }
+    if(!(
+        (input[0] > ASCII_LOWERCASE_LOWER_BOUND && 
+            input[0] < ASCII_LOWERCASE_UPPER_BOUND) || 
+        (input[0] > ASCII_UPPERCASE_LOWER_BOUND &&
+            input[0] < ASCII_UPPERCASE_UPPER_BOUND)))
+    {
+        puts("IDs and password must start with a letter!");
+        return 0;
+    }
+    for(int i = 0; i < strlen(input); i++)
+    {
+        if(
+            !((input[i] > ASCII_LOWERCASE_LOWER_BOUND && 
+                input[i] < ASCII_LOWERCASE_UPPER_BOUND)  ||
+            (input[i] > ASCII_UPPERCASE_LOWER_BOUND &&
+                input[i] < ASCII_UPPERCASE_UPPER_BOUND) ||
+            (input[i] > ASCII_NUMBER_LOWER_BOUND &&
+                input[i] < ASCII_NUMBER_UPPER_BOUND)))
+        {
+            puts("IDs and passwords must be alphanumeric!");
+            return 0;
+        }
+    }
+    return 1;
 }
 
 void displayOptions(void)

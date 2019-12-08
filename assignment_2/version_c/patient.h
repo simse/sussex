@@ -30,5 +30,4 @@ _Bool openPatient(char filename[], struct patient *patient);
 void row(int columnSize, char columnName[], char columnContents[]);
 void showPatient(struct patient patient);
 void editPatient(struct patient *patient);
-int loadPatients(struct patient *patients);
 void listPatients(struct patient *patients, int count);

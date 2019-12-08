@@ -44,7 +44,8 @@ void saveAuth(struct nurse nurses[])
     {
         fprintf(auth, "%s\n%s\n%s\n",
             encrypt(nurses[nurse].name, strlen(nurses[nurse].name) + 1),
-            encrypt(nurses[nurse].id, 10),
-            encrypt(nurses[nurse].password, 10));
+            encrypt(nurses[nurse].id, strlen(nurses[nurse].id) + 1),
+            encrypt(nurses[nurse].password, strlen(nurses[nurse].password) + 1));
     }
+    fclose(auth);
 }

@@ -60,22 +60,48 @@ void getBirthday(struct patient *patient, int displayLine)
 
 void getName(struct patient *patient)
 {
-    printf("Enter first name: ");
-    scanf("%[^\n]%*c", patient->first_name);
-    printf("\nEnter last name: ");
-    scanf("%[^\n]%*c", patient->last_name);
+    do
+    {
+        printf("Enter first name: ");
+        scanf("%[^\n]", patient->first_name);
+        getchar();
+    } while (strlen(patient->first_name) == 0);
+    do
+    {
+        printf("\nEnter last name: ");
+        scanf("%[^\n]", patient->last_name);
+        getchar();
+    } while (strlen(patient->last_name) == 0); 
 }
 
 void getBodyMeasurements(struct patient *patient)
 {
-    printf("\nEnter patient height (cm): ");
-    scanf("%d%*c", &patient->height);
+    _Bool error = 0;
+    do
+    {
+        if(error) puts(RED "Error - height out of range!" RESET);
+        printf("\nEnter patient height (cm): ");
+        scanf("%d%*c", &patient->height);
+        error = 1;
+    } while(patient->height < 100 || patient->height > 280);
     fflush(stdin);
-    printf("\nEnter patient weight (kg): ");
-    scanf("%d%*c", &patient->weight);
+    error = 0;
+    do
+    {
+        if(error) puts(RED "Error - waist out of range!" RESET);
+        printf("\nEnter patient waist (cm): ");
+        scanf("%d%*c", &patient->waist);
+        error = 1;
+    } while (patient->waist < 20 || patient->waist > 200);
     fflush(stdin);
-    printf("\nEnter patient waist (cm): ");
-    scanf("%d%*c", &patient->waist);
+    error = 0;
+    do
+    {
+        if(error) puts(RED "Error - weight out of range!" RESET);
+        printf("\nEnter patient weight (kg): ");
+        scanf("%d%*c", &patient->weight);
+        error = 1;
+    } while(patient->weight < 20 || patient->weight > 500);
 }
 
 void getComments(struct patient *patient)
@@ -157,7 +183,7 @@ _Bool openPatient(char filename[], struct patient *patient)
     fgets(buffer, sizeof buffer, patientFile);
     patient->weight = decryptNum(buffer);
     int i = 0;
-    while (fgets(buffer, sizeof buffer, patientFile) != NULL) /* read a line */
+    while (fgets(buffer, sizeof buffer, patientFile) != NULL)
     {
         strcpy(patient->comment[i - 1], decrypt(buffer, 2000));
         i++;
@@ -221,29 +247,6 @@ void editPatient(struct patient *patient)
     if(toEdit == 2) getBodyMeasurements(patient);
     if(toEdit == 3) getBirthday(patient, 8);
     savePatient(*patient);
-}
-
-int loadPatients(struct patient *patients)
-{
-    int i = 0;
-    DIR *d;
-    struct dirent *dir;
-    d = opendir("patients");
-    if(d)
-    {
-        while((dir = readdir(d)) != NULL)
-        {
-            if(dir->d_name[0] != '.')
-            {
-                openPatient(dir->d_name, &patients[i]);
-                i++;
-            }
-        }
-
-        closedir(d);
-    }
-
-    return i;
 }
 
 void listPatients(struct patient *patients, int count)
