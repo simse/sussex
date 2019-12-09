@@ -3,7 +3,7 @@
  * A program to enter patient details to be saved and read later
  * Simon Sorensen
  * 21/11/19
- * Version a
+ * Version b
  * ********************************************************************/
 
 /* Structures */
@@ -41,7 +41,33 @@ int main(void)
 {
     char tmp[255];
     printf("Username: ");
-    
+    scanf("%s", &tmp);
+    getchar();
+    printf("\nPassword: ");
+    scanf("%s", &tmp);
+    getchar();
+    puts("\n\nWelcome!\n");
+
+    printf("\nFirst name: ");
+    scanf("%s", &tmp);
+    getchar();
+    printf("\nLast name: ");
+    scanf("%s", &tmp);
+    getchar();
+    printf("\nBirthday: ");
+    scanf("%s", &tmp);
+    getchar();
+    printf("\nHeight: ");
+    scanf("%s", &tmp);
+    getchar();
+    printf("\nWaist: ");
+    scanf("%s", &tmp);
+    getchar();
+    printf("\nHeight: ");
+    scanf("%s", &tmp);
+    getchar();
+
+    puts("\n\nPatient file saved!");
 
     return 0;
 }

@@ -45,8 +45,19 @@ int main(void)
     /* Authenticate and greet consultant */
     /* Show menu options */
     /* OPTION 1 */
-    /* Show list of patients */
-    /*  */
+    /* Enter lastname */
+    /* Enter birthday */
+    /* Show patient */
+    /* OPTION 2 */
+    /* Enter lastname */
+    /* Enter birthday */
+    /* Choose section to edit */
+    /* Edit and save */
+    /* OPTION 3 */
+    /* Show list of nurses */
+    /* Enter new username */
+    /* Enter new password */
+    /* Encrypt and save */
 
     return 0;
 }

@@ -1,3 +1,11 @@
+/***********************************************************************
+ * patient.h
+ * Patient struct, constants and function prototypes
+ * Simon Sorensen
+ * 21/11/19
+ * Version c
+ * ********************************************************************/
+
 #include <stdlib.h>
 
 #pragma once
@@ -25,6 +33,7 @@ void getName(struct patient *patient);
 void getBodyMeasurements(struct patient *patient);
 void getComments(struct patient *patient);
 _Bool getComment(struct patient *patient, int index);
+void addComment(struct patient *patient);
 void savePatient(struct patient patient);
 _Bool openPatient(char filename[], struct patient *patient);
 void row(int columnSize, char columnName[], char columnContents[]);

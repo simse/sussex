@@ -1,3 +1,11 @@
+/***********************************************************************
+ * patient.h
+ * Patient function definitions
+ * Simon Sorensen
+ * 21/11/19
+ * Version c
+ * ********************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -6,6 +14,7 @@
 #include "patient.h"
 #include "encrypt.h"
 
+#define BUFFER_SIZE 255
 #define MAX_COMMENTS 50
 #define RED "\x1b[31m"
 #define GREEN "\x1b[32m"
@@ -129,9 +138,20 @@ _Bool getComment(struct patient *patient, int index)
     return 1;
 }
 
+void addComment(struct patient *patient)
+{
+    int i = 0;
+    while(patient->comment[i][1] != '\0')
+    {
+        i++;
+    }
+    printf("Index = %d", i);
+    getComment(patient, i);
+}
+
 void savePatient(struct patient patient)
 {
-    char filename[120];
+    char filename[BUFFER_SIZE];
     sprintf(filename, "patients/%s%02d%02d%02d.aow", patient.last_name,
             patient.birthday, patient.birthmonth, patient.birthyear);
     FILE *patientFile;
@@ -147,7 +167,15 @@ void savePatient(struct patient patient)
             encryptNum(patient.weight));
     for (int i = 0; i < 10; i++)
     {
-        fprintf(patientFile, "%s\n", encrypt(patient.comment[i], 3000));
+        if(patient.comment[i][0] != '\0' && patient.comment[i][1] != '\0')
+        {
+            fprintf(patientFile, "%s", encrypt(patient.comment[i], 3000));
+            if(patient.comment[i+1][0] != '\0' && 
+                patient.comment[i+1][1] != '\0')
+            {
+                fprintf(patientFile, "\n");
+            }
+        }
     }
     fclose(patientFile);
     printf(GREEN "\nSaved patient to file: %s!\n\n" RESET, filename);
@@ -156,7 +184,7 @@ void savePatient(struct patient patient)
 _Bool openPatient(char filename[], struct patient *patient)
 {
     FILE *patientFile;
-    char file[255];
+    char file[BUFFER_SIZE];
     sprintf(file, "patients/%s", filename);
     patientFile = fopen(file, "r");
     if(!patientFile)
@@ -164,11 +192,11 @@ _Bool openPatient(char filename[], struct patient *patient)
         printf(RED "File not found!\n" RESET);
         return 0;
     }
-    char buffer[255];
+    char buffer[BUFFER_SIZE];
     fscanf(patientFile, "%s", buffer);
-    strcpy(patient->first_name, decrypt(buffer, 255));
+    strcpy(patient->first_name, decrypt(buffer, BUFFER_SIZE));
     fscanf(patientFile, "%s", buffer);
-    strcpy(patient->last_name, decrypt(buffer, 255));
+    strcpy(patient->last_name, decrypt(buffer, BUFFER_SIZE));
     fgets(buffer, sizeof buffer, patientFile);
     fgets(buffer, sizeof buffer, patientFile);
     patient->birthday = decryptNum(buffer);
@@ -185,7 +213,14 @@ _Bool openPatient(char filename[], struct patient *patient)
     int i = 0;
     while (fgets(buffer, sizeof buffer, patientFile) != NULL)
     {
-        strcpy(patient->comment[i - 1], decrypt(buffer, 2000));
+        if(buffer[0] != '\n' && buffer[0] != '\0')
+        {
+            if(buffer[strlen(buffer) - 1] == '\n')
+            {
+                buffer[strlen(buffer) - 1] = 0;
+            }
+            strcpy(patient->comment[i], decrypt(buffer, 2000));
+        }
         i++;
     }
     fclose(patientFile);
@@ -201,7 +236,7 @@ void showPatient(struct patient patient)
 {
     /* Generate correct divider */
     int maxColumnWidth = strlen(patient.first_name) + strlen(patient.last_name) + 2;
-    char divider[60];
+    char divider[BUFFER_SIZE];
     strcpy(divider, "\n+----------+");
     for (int i = 0; i < maxColumnWidth + 1; i++)
     {
@@ -210,28 +245,34 @@ void showPatient(struct patient patient)
     strcat(divider, "+");
     /* Print out table */
     puts(divider);
-    char name[60];
+    char name[BUFFER_SIZE];
     sprintf(name, "%s %s", patient.first_name, patient.last_name);
     row(maxColumnWidth, "Name", name);
     puts(divider);
-    char weight[10];
+    char weight[BUFFER_SIZE];
     sprintf(weight, "%dkg", patient.weight);
     row(maxColumnWidth, "Weight", weight);
     puts(divider);
-    char height[10];
+    char height[BUFFER_SIZE];
     sprintf(height, "%dcm", patient.height);
     row(maxColumnWidth, "Height", height);
     puts(divider);
-    char waist[10];
+    char waist[BUFFER_SIZE];
     sprintf(waist, "%dcm", patient.waist);
     row(maxColumnWidth, "Waist", waist);
     puts(divider);
-    char birthday[20];
+    char birthday[BUFFER_SIZE];
     sprintf(birthday, "%02d/%02d/%02d", patient.birthday, patient.birthmonth, patient.birthyear);
     row(maxColumnWidth, "Birthday", birthday);
     puts(divider);
 
-    // TODO: Show comments
+    int i = 0;
+    while(patient.comment[i][0] != '\0')
+    {
+        printf("\n- %s", patient.comment[i]);
+        i++;
+    }
+    if(i == 0) puts("\nNo comments attached!");
 }
 
 void editPatient(struct patient *patient)
@@ -239,13 +280,15 @@ void editPatient(struct patient *patient)
     puts("You can edit:");
     puts("- 1: Name");
     puts("- 2: Body measurements");
-    puts("- 3: Birthday\n");
+    puts("- 3: Birthday");
+    puts("- 4: Add comment\n");
     printf("What would you like to edit? ");
     int toEdit;
     scanf("%d%*c", &toEdit);
     if(toEdit == 1) getName(patient);
     if(toEdit == 2) getBodyMeasurements(patient);
     if(toEdit == 3) getBirthday(patient, 8);
+    if(toEdit == 4) addComment(patient);
     savePatient(*patient);
 }
 

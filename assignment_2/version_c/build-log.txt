@@ -1,26 +1,29 @@
 patient.c: In function ‘getComment’:
-patient.c:99:15: warning: format ‘%[^
+patient.c:134:15: warning: format ‘%[^
    ’ expects argument of type ‘char *’, but argument 2 has type ‘char (*)[3000]’ [-Wformat=]
      scanf("%[^\n]%*c", &comment);
             ~~~^~       ~~~~~~~~
-patient.c: In function ‘showPatient’:
-patient.c:188:23: warning: ‘%s’ directive writing up to 49 bytes into a region of size between 10 and 59 [-Wformat-overflow=]
-     sprintf(name, "%s %s", patient.first_name, patient.last_name);
-                       ^~                       ~~~~~~~
-patient.c:188:5: note: ‘sprintf’ output between 2 and 100 bytes into a destination of size 60
-     sprintf(name, "%s %s", patient.first_name, patient.last_name);
-     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 consultant.c: In function ‘editNurseCredentials’:
-consultant.c:85:15: warning: format ‘%[^
+consultant.c:92:19: warning: format ‘%[^
    ’ expects argument of type ‘char *’, but argument 2 has type ‘char (*)[9]’ [-Wformat=]
-     scanf("%[^\n]%*c", &username);
-            ~~~^~       ~~~~~~~~~
-consultant.c:87:15: warning: format ‘%[^
+         scanf("%[^\n]", &username);
+                ~~~^~    ~~~~~~~~~
+consultant.c:98:19: warning: format ‘%[^
    ’ expects argument of type ‘char *’, but argument 2 has type ‘char (*)[9]’ [-Wformat=]
-     scanf("%[^\n]%*c", &password);
-            ~~~^~       ~~~~~~~~~
-consultant.c:88:5: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
-     strcpy(nurses[nurse-1].id, encrypt(username, 8));
+         scanf("%[^\n]", &password);
+                ~~~^~    ~~~~~~~~~
+consultant.c:101:5: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
+     strcpy(nurses[nurse-1].id, username);
      ^~~~~~
-consultant.c:88:5: warning: incompatible implicit declaration of built-in function ‘strcpy’
-consultant.c:88:5: note: include ‘<string.h>’ or provide a declaration of ‘strcpy’
+consultant.c:101:5: warning: incompatible implicit declaration of built-in function ‘strcpy’
+consultant.c:101:5: note: include ‘<string.h>’ or provide a declaration of ‘strcpy’
+consultant.c: In function ‘verifyFormat’:
+consultant.c:109:8: warning: implicit declaration of function ‘strlen’ [-Wimplicit-function-declaration]
+     if(strlen(input) != 8)
+        ^~~~~~
+consultant.c:109:8: warning: incompatible implicit declaration of built-in function ‘strlen’
+consultant.c:109:8: note: include ‘<string.h>’ or provide a declaration of ‘strlen’
+consultant.c:123:24: warning: incompatible implicit declaration of built-in function ‘strlen’
+     for(int i = 0; i < strlen(input); i++)
+                        ^~~~~~
+consultant.c:123:24: note: include ‘<string.h>’ or provide a declaration of ‘strlen’

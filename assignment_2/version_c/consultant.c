@@ -1,5 +1,5 @@
 /***********************************************************************
- * nurse.c
+ * consultant.c
  * A program to view and edit patient details
  * Simon Sorensen
  * 21/11/19
