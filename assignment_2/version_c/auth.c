@@ -12,11 +12,18 @@ void loadAuth(struct nurse nurses[])
     FILE *auth;
     char tmp[FILE_BUFFER];
     auth = fopen("auth.txt", "r");
-    for (int nurse = 0; nurse < 5; nurse++)
+    _Bool stop = 0;
+    for (int nurse = 0; nurse < 10; nurse++)
     {
+        if (stop) break;
         for (int field = 0; field < 3; field++)
         {
             fgets(tmp, FILE_BUFFER, (FILE *)auth);
+            if(feof(auth))
+            {
+                stop = 1;
+                break;
+            }
             strtok(tmp, "\n");
             strcpy(tmp, decrypt(tmp, FILE_BUFFER));
             if (field == 0)
@@ -36,12 +43,34 @@ void loadAuth(struct nurse nurses[])
     fclose(auth);
 }
 
+_Bool verifyLine(char c)
+{
+    if(c > 47 && c < 58)
+    {
+        return 1;
+    }
+
+    if(c > 64 && c < 91)
+    {
+        return 1;
+    }
+
+    if(c > 97 && c < 123)
+    {
+        return 1;
+    }
+
+    return 0;
+}
+
 void saveAuth(struct nurse nurses[])
 {
     FILE *auth;
     auth = fopen("auth.txt", "w");
-    for (int nurse = 0; nurse < 5; nurse++)
+    for (int nurse = 0; nurse < 10; nurse++)
     {
+        //printf("%d", nurses[nurse].name[0]);
+        if(!verifyLine(nurses[nurse].name[0])) break;
         fprintf(auth, "%s\n%s\n%s\n",
             encrypt(nurses[nurse].name, strlen(nurses[nurse].name) + 1),
             encrypt(nurses[nurse].id, strlen(nurses[nurse].id) + 1),
