@@ -20,6 +20,8 @@
 #define ASCII_UPPERCASE_UPPER_BOUND 123
 
 void editNurseCredentials(void);
+void addNurse(void);
+void deleteNurse(void);
 void displayOptions(void);
 void wait(void);
 void clearScreen(void);
@@ -76,7 +78,7 @@ void editNurseCredentials(void)
     struct nurse nurses[5];
     loadAuth(nurses);
     puts("The nurses are:");
-    for(int i = 0; i < 5; i++)
+    for(int i = 0; i < 10; i++)
     {
         printf("- %d: %s\n", i + 1, nurses[i].name);
     }
@@ -84,7 +86,7 @@ void editNurseCredentials(void)
     do {
         printf("\nWhich nurse credentials you like to update? ");
         scanf("%d%*c", &nurse);
-    } while(nurse < 0 && nurse > 6);
+    } while(nurse < 0 && nurse > 10);
     char username[9], password[9];
     do
     {
@@ -102,6 +104,27 @@ void editNurseCredentials(void)
     strcpy(nurses[nurse-1].password, password);
     saveAuth(nurses);
     printf("\n\nCredentials saved!");
+}
+
+void addNurse(void)
+{
+
+}
+
+void deleteNurse(void)
+{
+    struct nurse nurses[5];
+    loadAuth(nurses);
+    puts("The nurses are:");
+    for(int i = 0; i < 10; i++)
+    {
+        printf("- %d: %s\n", i + 1, nurses[i].name);
+    }
+    int nurse = 0;
+    do {
+        printf("\nWhich nurse credentials you like to delete? ");
+        scanf("%d%*c", &nurse);
+    } while(nurse < 0 && nurse > 10);
 }
 
 _Bool verifyFormat(char input[])

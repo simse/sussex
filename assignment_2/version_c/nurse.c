@@ -69,7 +69,6 @@ void login(struct nurse nurses[])
 {
     char username[9];
     char password[9];
-    //clearScreen();
     printf("Nurse terminal\n");
     do
     {
