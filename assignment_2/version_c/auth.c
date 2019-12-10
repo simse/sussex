@@ -1,3 +1,11 @@
+/***********************************************************************
+ * auth.c
+ * Auth constants and function declarations
+ * Simon Sorensen
+ * 21/11/19
+ * Version c
+ * ********************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -48,4 +56,9 @@ void saveAuth(struct nurse nurses[])
             encrypt(nurses[nurse].password, strlen(nurses[nurse].password) + 1));
     }
     fclose(auth);
+}
+
+char* enterPassword(void)
+{
+    return "";
 }

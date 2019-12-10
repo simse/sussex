@@ -38,7 +38,7 @@ int main(void)
     struct nurse nurses[5];
     struct patient patient;
     loadAuth(nurses);
-    //login(nurses); //Username = a2345678, password =
+    //login(nurses);
     clearScreen();
     displayTitle();
     puts("Add new patient:");
