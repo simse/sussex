@@ -212,6 +212,10 @@ _Bool openPatient(char filename[], struct patient *patient)
             }
             strcpy(patient->comment[i], decrypt(buffer, 2000));
         }
+        else
+        {
+            break;
+        }
         i++;
     }
     fclose(patientFile);

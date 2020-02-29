@@ -12,4 +12,12 @@
 
 void loadAuth(struct nurse nurses[]);
 void saveAuth(struct nurse nurses[]);
-char* enterPassword(void);
+void consultantLogin(void);
+_Bool verifyFormat(char input[]);
+_Bool verifyLine(char c);
+int countNurses(void);
+void listNurses(void);
+int selectNurse(char* message);
+void editNurses(void);
+void addNurse(void);
+void deleteNurse(void);
