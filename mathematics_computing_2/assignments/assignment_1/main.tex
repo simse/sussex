@@ -1,0 +1,197 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{tikz}
+\usepackage{tkz-euclide}
+\usepackage{pgfplots}
+\usepackage{booktabs}
+\usepackage[margin=1.1in]{geometry}
+\usetkzobj{all}
+\usetikzlibrary{arrows, shapes.gates.logic.US, calc}
+\usepackage{minted}
+\usepackage{titlesec}
+\usepackage{arydshln}
+\usepackage{mathtools}
+\newcommand{\sectionbreak}{\clearpage}
+\newcommand\inv[1]{#1\raisebox{1.15ex}{$\scriptscriptstyle-\!1$}}
+
+
+\begin{document}
+\begin{titlepage}
+\begin{figure}[t]
+    \centering\includegraphics[width=0.15\textwidth]{logo}
+\end{figure}
+\begin{center}
+    \textsc{ \LARGE{University of Sussex \\}}
+	\textsc{School of Engineering and Informatics\\}
+	\vspace{12mm}
+	\fontsize{6mm}{7mm}\textnormal{Mathematics for Computing 2\\}
+	\fontsize{10mm}{7mm}\selectfont
+	\vspace{2mm}
+    \textup{Assignment 1}\\
+\end{center}
+
+\vspace{25mm}
+
+\centering{\large{Candidate number: 215800}}
+
+\end{titlepage}
+\tableofcontents
+
+\section{Logic and Karnaugh maps}
+\subsection{Truth table}
+
+Here is the truth table.
+\begin{table}[h]
+\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|}
+\hline
+A & B & C & D & Gate 1 & Gate 2 & Gate 3 & Gate 4 & Gate 5 & Gate 6 & OUT \\ \hline
+0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 1 & 0 & 1 \\ \hline
+0 & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 1 & 0 & 1 \\ \hline
+0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 1 \\ \hline
+0 & 0 & 1 & 1 & 0 & 1 & 0 & 0 & 1 & 0 & 1 \\ \hline
+0 & 1 & 0 & 0 & 1 & 0 & 0 & 0 & 1 & 0 & 1 \\ \hline
+0 & 1 & 0 & 1 & 1 & 0 & 0 & 0 & 1 & 0 & 1 \\ \hline
+0 & 1 & 1 & 0 & 0 & 0 & 0 & 1 & 0 & 1 & 1 \\ \hline
+0 & 1 & 1 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 1 \\ \hline
+1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ \hline
+1 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ \hline
+1 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ \hline
+1 & 0 & 1 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ \hline
+1 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ \hline
+1 & 1 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ \hline
+1 & 1 & 1 & 0 & 0 & 0 & 0 & 1 & 0 & 1 & 1 \\ \hline
+1 & 1 & 1 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 1 \\ \hline
+\end{tabular}
+\end{table}
+
+\subsection{Karnaugh map and circuit}
+
+\begin{table}[h]
+\begin{tabular}{@{}lllll@{}}
+\toprule
+CD - AB & 00 & 01 & 11 & 10 \\ \midrule
+00      & 0  & 0  & 1  & 1  \\
+01      & 0  & 0  & 1  & 1  \\
+11      & 0  & 0  & 0  & 1  \\
+10      & 0  & 0  & 0  & 1  \\ \bottomrule
+\end{tabular}
+\end{table}
+
+[insert from paper]
+
+\subsection{Represent circuit using NAND gates}
+
+see paper simon
+
+\section{Integration}
+
+\section{Integration and design}
+
+\section{Further integration 1}
+
+\section{Further integration 2}
+
+\section{Arithmetic and geometric series}
+
+\subsection{For the series 1, 5, 9, 13 …, find the sum of the first 11 terms}
+
+\[a=1, d=4\]
+
+\[S_{11} = \frac{11}{2}(2+40)=231\]
+
+\subsection{For the series -6, -6.8, -7.6 …, find the sum of terms 6 through to 10
+inclusive.}
+
+\[a=-6, d=-0.8\]
+
+\[S_{6...10} = S_{10}-S_4\]
+
+\[S_4=\frac{4}{2}(-12-2.4)=-28.8\]
+\[S_{10}=\frac{10}{2}(-12-2.4)=-72\]
+
+\[S_{6...10} = -42.2\]
+
+\subsection{For the series 2, 4, 8, 16 … , find the 11
+th term, and the sum of the first 13
+terms.}
+
+\[a=2, r=2\]
+\[n_{11}=2\cdot2^{10}=2048\]
+\[S_{13}=\frac{2(2^{13}-1)}{2-1}=16382\]
+
+\subsection{For the series 3, -3.6, 4.32, -5.184… , find the 10
+th term and state whether
+this is a converging or a diverging series.}
+
+\[a=3, r=-1.2\]
+\[n_{10}=3\cdot-1.2^9=-15.48\]
+
+The series is diverging.
+
+\subsection{For the series -4, 3.2, -2.56, 2.048 … , find the 8
+th term and the sum of an
+infinite number of terms of this series.}
+
+\[a=-4, r=-0.8\]
+\[n_=-4\cdot-0.8^7=0.838\]
+\[S_{\infty}=\frac{-4}{1--0.8}=2.\overline{2}\]
+
+\section{Representing negative numbers in binary}
+
+\subsection{Convert to two's complement binary 12-bit form}
+\subsubsection{$-781$}
+\[+781_2=001100001101\]
+
+Invert it
+\[110011110010\]
+
+Add 1
+\[-781_2=110011110011\]
+
+\subsubsection{$-56$}
+\[+56_2=000000111000\]
+
+Invert it
+\[111111000111\]
+
+Add 1
+\[-56_2=111111001000\]
+
+\subsubsection{$-102$}
+\[+102_2=000001100110\]
+
+Invert it
+\[111110011001\]
+
+Add 1
+\[-102_2=111110011010\]
+
+\subsection{Perform the following calculations in binary}
+\subsubsection{$78-671$}
+\[78=000001001110\]
+\[-671=110101100001\]
+\[78+-671=110110101111\]
+
+\subsubsection{$-376-78$}
+\[-376=111010001000\]
+\[-78=111110110010\]
+\[-376+-78=111000111010\]
+
+\section{Representing floating point numbers in binary}
+
+\[27.764 = 11011.1011111100\]
+
+Normalize
+\[1.10111011111100\]
+
+Gather information
+sign = $0$
+exponent = $4$
+biased exponent = $131$
+mantissa = $10111011111100$
+
+\section{Set theory}
+
+\section{Discrete probability}
+
+\end{document}
