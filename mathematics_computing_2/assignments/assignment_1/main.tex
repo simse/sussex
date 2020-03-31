@@ -1,19 +1,11 @@
 \documentclass[12pt]{article}
-\usepackage[utf8]{inputenc}
-\usepackage{tikz}
-\usepackage{tkz-euclide}
-\usepackage{pgfplots}
 \usepackage{booktabs}
+\usepackage{graphicx}
 \usepackage[margin=1.1in]{geometry}
-\usetkzobj{all}
-\usetikzlibrary{arrows, shapes.gates.logic.US, calc}
-\usepackage{minted}
-\usepackage{titlesec}
-\usepackage{arydshln}
-\usepackage{mathtools}
-\newcommand{\sectionbreak}{\clearpage}
-\newcommand\inv[1]{#1\raisebox{1.15ex}{$\scriptscriptstyle-\!1$}}
+\usepackage{float}
+\restylefloat{table}
 
+\setlength{\parskip}{1em}
 
 \begin{document}
 \begin{titlepage}
@@ -36,6 +28,8 @@
 
 \end{titlepage}
 \tableofcontents
+
+\clearpage
 
 \section{Logic and Karnaugh maps}
 \subsection{Truth table}
@@ -77,19 +71,108 @@ CD - AB & 00 & 01 & 11 & 10 \\ \midrule
 \end{tabular}
 \end{table}
 
-[insert from paper]
+\includegraphics[width=\textwidth]{normal_gates.jpg}}
 
 \subsection{Represent circuit using NAND gates}
 
-see paper simon
+\includegraphics[width=\textwidth]{nand_gates.jpg}}
 
 \section{Integration}
 
+\subsection{$\int_{2}^{5} 2x^3$}
+
+\[
+\int_{2}^{5} 2x^3 = \left[\frac{x^4}{2} + C\right]_2^5
+\]
+
+\[
+\left(\frac{5^4}{2} + C\right) - \left(\frac{2^4}{2} + C\right) = 312.5 - 8 = 304.5
+\]
+
+\subsection{$\int_{0}^{\frac{\pi}{2}} sin^2(x)$}
+
+\[
+\int_{0}^{\frac{\pi}{2}} sin^2(x) = \left[-\frac{\sin\left(2x\right)-2x}{4} +C\right]_0^{\frac{\pi}{2}}
+\]
+
+\[
+\left(-\frac{\sin\left(2 \cdot \frac{\pi}{2}\right)-2 \cdot \frac{\pi}{2}}{4} +C\right) - \left(-\frac{\sin\left(2 \cdot 0\right)-2 \cdot 0}{4} +C\right) = \frac{\pi}{4} - \frac{-0}{4} = \frac{\pi}{4}
+\]
+
+\subsection{$\int 2x^2 \cdot ln(x)$}
+
+\[2\left(\frac{x^3 \cdot ln(x)}{3} - \frac{x^3}{9}\right) +C\]
+
+\[\frac{2x^3 (3\cdot ln(x) - 1)}{9} + C\]
+
+\subsection{$ y= \int \frac{x^2}{2}sin(x)$ given that if $x=\pi$ then $y=1$}
+
+??
+
+\subsection{$\int e^x \cdot sin(x)$}
+
+\[\frac{e^x(sin(x) - cos(x))}{2} + C\]
+
 \section{Integration and design}
+
+\subsection{Calculate the surface area of the front elevation of the bridge.}
+
+Total surface area = $8 \cdot 20 = 160m^2$
+
+Remove area of circles
+\[160 - 4\pi = 147.43m^2\]
+
+Remove area of the small boxes on either side
+\[147.43 - 3 - 3 = 141.43m^2\]
+
+Remove area of the big boxes on either side
+\[141.43 - (4 \cdot 4) - (4 \cdot 4) = 109.43m^\]
+
+Find estimated equation of arch
+\[y=-0.375x^2 + 6\]
+
+Integrate quation
+\[6x-\frac{x^3}{8}\]
+
+Find area under arch
+\[32m^2\]
+
+Remove area under arch
+\[109.43 - 32 = 77.43m^2\]
+
+The area of the front elevation of the bridge is $77.43m^2$.
+
+\subsection{Calculate the volume and the mass of bricks required to
+3 construct the railway bridge.}
+
+The total volume of the bridge is $77.43 \cdot 6 = 464.58m^3$. The mass of the bridge would be $929,160kg$ tons. Or 929.16 tons.
 
 \section{Further integration 1}
 
+Since you no equation for the graph is given, it's difficult to integrate it to find the area under the graph. Instead I used a method of calculating the area of the shape of the bar formed by drawing the top from point to point. The shape this gives is a trapezoid.
+
+To find the area of a trapezoid, the following equation can be used:
+\[A = \frac{H_1 + H_2}{2} \cdot W\]
+
+Since each data point had a spacing of one second, $W$ can be ignored. Thus to find the estimated distance flown in each second, I took the current velocity and added the next velocity and divided by 2. Then to find the total area, I summed up the result of all areas.
+
+The rocket flew 64,818 meters during the rocket burn phase.
+
 \section{Further integration 2}
+
+\subsection{Average velocity between $A$ and $B$}
+
+\[(0.013\cdot 70) + (\frac{0.0014 \cdot 20}{2}) + (\frac{0.0056 \cdot 20}{2}) = 0.91 + 0.014 + 0.056 = 0.98km\]
+
+Between point A and B the car travelled 0.98km.
+
+\[\frac{0.98}{0.013} = 75.38km/h\]
+
+The driver travelled on average with a velocity of 75.38km/h between point A and B. Therefore he will not get a speeding ticket.
+
+\subsection{Calculate average surface temperature}
+
+No.
 
 \section{Arithmetic and geometric series}
 
@@ -179,19 +262,185 @@ Add 1
 
 \section{Representing floating point numbers in binary}
 
-\[27.764 = 11011.1011111100\]
+\subsection{27.764}
+\[27 = 11011\]
+\[.764 = 1100001110010101100\]
 
 Normalize
-\[1.10111011111100\]
+\[11011.1100001110010101100\]
+\[1.10111100001110010101100\]
+Moved 4 spaces to the left, thus exponent is 4.
 
-Gather information
-sign = $0$
-exponent = $4$
-biased exponent = $131$
-mantissa = $10111011111100$
+The number is positive the sign bit is 0. When normalizing, the [dot] was moved 4 spaces to the left, so the exponent is 4. The biased exponent is 131. The mantissa is $10111100001110010101100$.
+
+\begin{tabular}{l|l|l}
+  Sign& Biased exponent & Mantissa \\
+  \hline
+  0& 10000011& 10111100001110010101100\\
+\end{tabular}
+
+\subsection{-416.2543}
+\[416 = 110100000\]
+\[.2543 = 010000010001101\]
+
+Normalize
+\[110100000.010000010001101\]
+\[1.10100000010000010001101\]
+Moved 8 spaces to the left, thus exponent is 8. Biased exponent is 135.
+
+
+\begin{tabular}{l|l|l}
+  Sign& Biased exponent & Mantissa \\
+  \hline
+  1 & 10000111 & 10100000010000010001101\\
+\end{tabular}
+
+\subsection{0.00476}
+\[0 = 0\]
+\[.00476 = 0000000100110111111100111000110\]
+
+Normalize
+\[0.0000000100110111111100111000110\]
+\[000000001.00110111111100111000110\]
+Moved 8 spaces to the right, thus exponent is -8. Biased exponent is 119.
+
+
+\begin{tabular}{l|l|l}
+  Sign& Biased exponent & Mantissa \\
+  \hline
+  0 & 01110111 & 00110111111100111000110\\
+\end{tabular}
 
 \section{Set theory}
+Below are membership tables for each statement. If they are not equal the statement is false.
+
+\subsection{$A \cap B = B \cap A$}
+
+True.
+
+\begin{table}[H]
+\begin{tabular}{ll|ll}
+A & B & $A⁡ \cap ⁡B$ & $B \cap ⁡A$ \\ \hline
+0 & 0 & 0         & 0         \\
+1 & 0 & 0         & 0         \\
+0 & 1 & 0         & 0         \\
+1 & 1 & 1         & 1        
+\end{tabular}
+\end{table}
+
+\subsection{$\overline{A \cap B} = \overline{A} \cap \overline{B}$}
+
+False.
+
+\begin{table}[H]
+\begin{tabular}{ll|ll}
+A & B & $\overline{A \cap B}$ & $\overline{A} \cap \overline{B}$ \\ \hline
+0 & 0 & 1         & 1         \\
+1 & 0 & 1         & 0         \\
+0 & 1 & 1         & 0         \\
+1 & 1 & 0         & 0        
+\end{tabular}
+\end{table}
+
+\subsection{$A \cap (B \cap C) = (A \cap B) \cap C$}
+
+True.
+
+
+\begin{table}[H]
+\begin{tabular}{lll|ll}
+A & B & C & $A \cap (B \cap C)$ & $(A \cap B) \cap C$ \\ \hline
+0 & 0 & 0 & 0         & 0         \\
+0 & 0 & 1 & 0         & 0         \\
+0 & 1 & 0 & 0         & 0         \\
+0 & 1 & 1 & 0         & 0         \\
+1 & 0 & 0 & 0         & 0         \\
+1 & 0 & 1 & 0         & 0         \\
+1 & 1 & 0 & 0         & 0         \\
+1 & 1 & 1 & 1         & 1         \\
+\end{tabular}
+\end{table}
+
+\subsection{$A \cup (B \cap C) = (A \cup B) \cap C$}
+
+False.
+
+\begin{table}[H]
+\begin{tabular}{lll|ll}
+A & B & C & $A \cup (B \cap C)$ & $(A \cup B) \cap C$ \\ \hline
+0 & 0 & 0 & 0         & 0         \\
+0 & 0 & 1 & 0         & 0         \\
+0 & 1 & 0 & 0         & 0         \\
+0 & 1 & 1 & 1         & 1         \\
+1 & 0 & 0 & 1         & 0         \\
+1 & 0 & 1 & 1         & 1         \\
+1 & 1 & 0 & 1         & 0         \\
+1 & 1 & 1 & 1         & 1         \\
+\end{tabular}
+\end{table}
+
+\subsection{$A \cup (B \cap C) = (A \cup B) \cap (A \cup C)$}
+
+False.
+
+\begin{table}[H]
+\begin{tabular}{lll|ll}
+A & B & C & $A \cup (B \cap C)$ & $(A \cup B) \cap C$ \\ \hline
+0 & 0 & 0 & 0         & 0         \\
+0 & 0 & 1 & 0         & 0         \\
+0 & 1 & 0 & 0         & 0         \\
+0 & 1 & 1 & 1         & 0         \\
+1 & 0 & 0 & 1         & 0         \\
+1 & 0 & 1 & 1         & 1         \\
+1 & 1 & 0 & 1         & 1         \\
+1 & 1 & 1 & 1         & 1         \\
+\end{tabular}
+\end{table}
+
+\subsection{$\overline{B \setminus A} = \overline{A} \setminus \overline{B}$}
+
+True.
+
+\begin{table}[H]
+\begin{tabular}{ll|ll}
+A & B & $\overline{A \cap B}$ & $\overline{A} \cap \overline{B}$ \\ \hline
+0 & 0 & 1         & 1         \\
+1 & 0 & 0         & 0         \\
+0 & 1 & 0         & 0         \\
+1 & 1 & 1         & 1        
+\end{tabular}
+\end{table}
+
+\subsection{$n(A) + n(B)$ and $n(A \cup B)$}
+
+Always equal.
+
+\subsection{$n(B) - n(a)$ and $n(B \setminus A)$}
+
+Always equal.
+
+\subsection{$n(A) \cdot n(B)$ and $n(A \cdot B)$}
+
+Sometimes,...
 
 \section{Discrete probability}
+
+\subsection{Probability of life on K'Pac}
+
+\[P(L=T, A=F) = 0.15 \cdot 0.9\]
+\[P(L=T, A=T) = 0.75 \cdot 0.1\]
+
+\[P(L=T)=0.9 \cdot 0.15 + 0.1 \cdot 0.75 = 0.21\]
+
+There is a 21\% chance that there is some life form on K'Pax. Not bad but not good either.
+
+
+
+
+
+\subsection{Given there is life, find probability of an oxygen atmosphere}
+
+\[P(A|L) = \frac{P(L | A) \cdot P(A)}{P(L)}\]
+\[P(A|L) = \frac{0.75 \cdot 0.1}{0.21} = 0.357\]
 
 \end{document}
